@@ -6,15 +6,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].bundle.js",
-    clean: true, // Membersihkan /dist sebelum build
+    clean: true,
   },
   module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-    ],
+    rules: [{}],
   },
   plugins: [
     new HtmlWebpackPlugin({

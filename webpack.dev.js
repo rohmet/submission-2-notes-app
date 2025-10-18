@@ -12,4 +12,12 @@ module.exports = merge(common, {
     port: 9000,
     open: true,
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
 });

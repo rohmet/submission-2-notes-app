@@ -1,5 +1,3 @@
-// src/script/notes-api.js
-
 const BASE_URL = "https://notes-api.dicoding.dev/v2";
 
 const getNotes = async () => {

@@ -1,4 +1,3 @@
-/* style.css */
 * {
   padding: 0;
   margin: 0;
@@ -13,4 +12,6 @@ main {
   max-width: 1200px;
   padding: 2rem;
   margin-inline: auto;
+
+  flex-grow: 1;
 }

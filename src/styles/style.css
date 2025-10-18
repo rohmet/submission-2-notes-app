@@ -1,0 +1,17 @@
+/* style.css */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #f0f2f5; /* Memberi warna latar belakang yang lembut */
+}
+
+main {
+  max-width: 1200px;
+  padding: 2rem;
+  margin-inline: auto;
+}

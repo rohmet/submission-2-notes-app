@@ -1,47 +1,63 @@
-import notes from "../../data/notes.js";
-import Utils from "../utils.js"; // Kita akan butuh Utils
+// Hapus import yang tidak perlu seperti 'notes', 'saveData', 'Utils'
+import { getNotes } from "../notes-api.js";
 
 const main = () => {
-  const noteFormElement = document.querySelector("note-form");
   const noteListElement = document.querySelector("note-list");
+  const loadingIndicator = noteListElement.querySelector(".loading-indicator");
 
-  // Fungsi untuk merender semua catatan ke dalam <note-list>
-  const renderNotes = () => {
-    // 1. Kosongkan <note-list> terlebih dahulu
-    Utils.emptyElement(noteListElement);
+  // Fungsi untuk menampilkan loading
+  const showLoading = () => {
+    loadingIndicator.style.display = "block";
+  };
 
-    // 2. Buat elemen <note-item> untuk setiap data catatan
+  // Fungsi untuk menyembunyikan loading
+  const hideLoading = () => {
+    loadingIndicator.style.display = "none";
+  };
+
+  // Fungsi untuk merender catatan
+  const renderNotes = (notes) => {
+    // Kosongkan note-list dari elemen sebelumnya
+    noteListElement.innerHTML = "";
+
+    // Jika tidak ada catatan, tampilkan pesan
+    if (notes.length === 0) {
+      noteListElement.innerHTML = "<p>Tidak ada catatan untuk ditampilkan.</p>";
+      return;
+    }
+
+    // Buat elemen <note-item> untuk setiap catatan
     const noteItemElements = notes.map((note) => {
       const noteItemElement = document.createElement("note-item");
-      noteItemElement.note = note; // Men-set properti 'note' pada note-item
+      noteItemElement.note = note;
       return noteItemElement;
     });
 
-    // 3. Tambahkan semua elemen <note-item> ke dalam <note-list>
     noteListElement.append(...noteItemElements);
   };
 
-  const onNoteAdded = (event) => {
-    const { title, body } = event.detail;
-
-    const newNote = {
-      id: `notes-${Date.now()}`,
-      title: title,
-      body: body,
-      createdAt: new Date().toISOString(),
-      archived: false,
-    };
-
-    notes.push(newNote);
-
-    // 4. Panggil renderNotes() lagi untuk memperbarui tampilan
-    renderNotes();
+  // Fungsi untuk mengambil dan menampilkan catatan dari API
+  const showNotes = async () => {
+    showLoading();
+    try {
+      // Panggil fungsi getNotes dari notes-api.js
+      const notes = await getNotes();
+      renderNotes(notes);
+    } catch (error) {
+      // Tampilkan pesan error jika fetch gagal
+      noteListElement.innerHTML = `<p>Gagal memuat catatan: ${error.message}</p>`;
+    } finally {
+      hideLoading();
+    }
   };
 
-  noteFormElement.addEventListener("note-added", onNoteAdded);
+  // Panggil showNotes saat halaman pertama kali dimuat
+  showNotes();
 
-  // 5. Panggil renderNotes() saat aplikasi pertama kali dimuat
-  renderNotes();
+  // Kita akan menangani form submission di langkah berikutnya
+  // Untuk sementara, kita bisa beri komentar atau hapus kode event listener form
+  // const noteFormElement = document.querySelector('note-form');
+  // noteFormElement.addEventListener('note-added', onNoteAdded);
 };
 
 export default main;

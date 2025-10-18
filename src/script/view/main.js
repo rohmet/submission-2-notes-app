@@ -1,4 +1,3 @@
-// Hapus import yang tidak perlu seperti 'notes', 'saveData', 'Utils'
 import { getNotes, createNote, deleteNote } from "../notes-api.js";
 
 const main = () => {
@@ -17,12 +16,21 @@ const main = () => {
     loadingIndicator.style.display = "none";
   };
 
+  // Fungsi Membersihkan list tanpa menghapus loader
+  const clearNoteList = () => {
+    const itemsToRemove = noteListElement.querySelectorAll("note-item, p");
+    itemsToRemove.forEach((item) => item.remove());
+  };
+
   // Fungsi untuk merender catatan
   const renderNotes = (notes) => {
-    noteListElement.innerHTML = "";
+    clearNoteList();
 
     if (notes.length === 0) {
-      noteListElement.innerHTML = "<p>Tidak ada catatan untuk ditampilkan.</p>";
+      noteListElement.insertAdjacentHTML(
+        "beforeend",
+        "<p>Tidak ada catatan untuk ditampilkan.</p>"
+      );
       return;
     }
 
@@ -45,7 +53,11 @@ const main = () => {
       const notes = await getNotes();
       renderNotes(notes);
     } catch (error) {
-      noteListElement.innerHTML = `<p>Gagal memuat catatan: ${error.message}</p>`;
+      clearNoteList();
+      noteListElement.insertAdjacentHTML(
+        "beforeend",
+        `<p>Gagal memuat catatan: ${error.message}</p>`
+      );
     } finally {
       hideLoading();
     }

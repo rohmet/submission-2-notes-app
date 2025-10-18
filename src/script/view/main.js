@@ -1,9 +1,11 @@
 // Hapus import yang tidak perlu seperti 'notes', 'saveData', 'Utils'
-import { getNotes } from "../notes-api.js";
+import { getNotes, createNote } from "../notes-api.js";
 
 const main = () => {
   const noteListElement = document.querySelector("note-list");
   const loadingIndicator = noteListElement.querySelector(".loading-indicator");
+
+  const noteFormElement = document.querySelector("note-form");
 
   // Fungsi untuk menampilkan loading
   const showLoading = () => {
@@ -50,6 +52,31 @@ const main = () => {
       hideLoading();
     }
   };
+
+  // 3. Buat fungsi handler untuk 'note-added'
+  const onNoteAdded = async (event) => {
+    const { title, body } = event.detail;
+
+    // Tampilkan loading saat mengirim data
+    showLoading();
+    try {
+      // Kirim catatan baru ke API
+      await createNote(title, body);
+
+      // Jika berhasil, panggil showNotes() untuk me-refresh daftar
+      showNotes();
+    } catch (error) {
+      // Tampilkan error jika gagal
+      alert(`Gagal menambahkan catatan: ${error.message}`);
+    } finally {
+      // Sembunyikan loading baik berhasil maupun gagal
+      // (showNotes() sudah punya hideLoading, tapi ini untuk jaga-jaga jika showNotes gagal)
+      hideLoading();
+    }
+  };
+
+  // 4. Tambahkan event listener kembali
+  noteFormElement.addEventListener("note-added", onNoteAdded);
 
   // Panggil showNotes saat halaman pertama kali dimuat
   showNotes();

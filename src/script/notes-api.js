@@ -15,5 +15,23 @@ const getNotes = async () => {
   return responseJson.data;
 };
 
-// Ekspor fungsi agar bisa digunakan di file lain
-export { getNotes };
+const createNote = async (title, body) => {
+  const response = await fetch(`${BASE_URL}/notes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, body }),
+  });
+
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    throw new Error(responseJson.message);
+  }
+
+  // Kembalikan data catatan baru yang dibuat
+  return responseJson.data;
+};
+
+export { getNotes, createNote };

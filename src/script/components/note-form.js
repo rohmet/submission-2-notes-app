@@ -94,6 +94,7 @@ class NoteForm extends HTMLElement {
         font-size: 1rem;
         cursor: pointer;
         transition: background-color 0.2s;
+        margin-bottom: 1rem;
       }
 
       button:hover {

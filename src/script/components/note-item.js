@@ -51,6 +51,22 @@ class NoteItem extends HTMLElement {
         margin-top: 0;
         color: #333;
       }
+
+      .delete-button {
+        padding: 0.5rem 1rem;
+        background-color: #dc3545; /* Warna merah untuk bahaya */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+        margin-top: 1rem;
+        transition: background-color 0.2s;
+      }
+
+      .delete-button:hover {
+        background-color: #c82333;
+      }
     `;
   }
 
@@ -63,8 +79,23 @@ class NoteItem extends HTMLElement {
       <div class="note-card">
         <h3 class="note-card__title">${this._note.title}</h3>
         <p class="note-card__body">${this._note.body}</p>
+
+        <button type="button" class="delete-button">Hapus</button>
       </div>
     `;
+
+    this._shadowRoot
+      .querySelector(".delete-button")
+      .addEventListener("click", () => {
+        // Kirim event 'note-deleted' saat tombol diklik
+        this.dispatchEvent(
+          new CustomEvent("note-deleted", {
+            detail: { noteId: this._note.id }, // Kirim ID catatan
+            bubbles: true,
+            composed: true,
+          })
+        );
+      });
   }
 }
 

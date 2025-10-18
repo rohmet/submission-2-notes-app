@@ -1,5 +1,5 @@
 // Hapus import yang tidak perlu seperti 'notes', 'saveData', 'Utils'
-import { getNotes, createNote } from "../notes-api.js";
+import { getNotes, createNote, deleteNote } from "../notes-api.js";
 
 const main = () => {
   const noteListElement = document.querySelector("note-list");
@@ -32,6 +32,9 @@ const main = () => {
     const noteItemElements = notes.map((note) => {
       const noteItemElement = document.createElement("note-item");
       noteItemElement.note = note;
+
+      noteItemElement.addEventListener("note-deleted", onNoteDeleted);
+
       return noteItemElement;
     });
 
@@ -62,6 +65,7 @@ const main = () => {
     try {
       // Kirim catatan baru ke API
       await createNote(title, body);
+      showNotes();
 
       // Jika berhasil, panggil showNotes() untuk me-refresh daftar
       showNotes();
@@ -75,16 +79,33 @@ const main = () => {
     }
   };
 
-  // 4. Tambahkan event listener kembali
+  const onNoteDeleted = async (event) => {
+    const { noteId } = event.detail;
+
+    // Tampilkan konfirmasi
+    const isConfirmed = confirm(
+      "Apakah Anda yakin ingin menghapus catatan ini?"
+    );
+    if (!isConfirmed) {
+      return; // Batal jika pengguna menekan "Cancel"
+    }
+
+    showLoading();
+    try {
+      // Panggil API untuk menghapus
+      await deleteNote(noteId);
+
+      // Refresh daftar catatan
+      showNotes();
+    } catch (error) {
+      alert(`Gagal menghapus catatan: ${error.message}`);
+    } finally {
+      hideLoading();
+    }
+  };
+
   noteFormElement.addEventListener("note-added", onNoteAdded);
-
-  // Panggil showNotes saat halaman pertama kali dimuat
   showNotes();
-
-  // Kita akan menangani form submission di langkah berikutnya
-  // Untuk sementara, kita bisa beri komentar atau hapus kode event listener form
-  // const noteFormElement = document.querySelector('note-form');
-  // noteFormElement.addEventListener('note-added', onNoteAdded);
 };
 
 export default main;

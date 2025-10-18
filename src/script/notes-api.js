@@ -34,4 +34,19 @@ const createNote = async (title, body) => {
   return responseJson.data;
 };
 
-export { getNotes, createNote };
+const deleteNote = async (noteId) => {
+  const response = await fetch(`${BASE_URL}/notes/${noteId}`, {
+    method: "DELETE",
+  });
+
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    throw new Error(responseJson.message);
+  }
+
+  // Jika berhasil, kembalikan pesan sukses
+  return responseJson.message;
+};
+
+export { getNotes, createNote, deleteNote };

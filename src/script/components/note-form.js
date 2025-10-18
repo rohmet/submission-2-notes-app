@@ -23,14 +23,11 @@ class NoteForm extends HTMLElement {
   }
 
   #onFormSubmit(event) {
-    // 1. Mencegah perilaku default form (reload halaman)
     event.preventDefault();
 
-    // 2. Mengambil nilai dari input judul dan body
     const title = this._shadowRoot.querySelector("#title").value;
     const body = this._shadowRoot.querySelector("#body").value;
 
-    // 3. Membuat Custom Event baru bernama 'note-added'
     const newNoteEvent = new CustomEvent("note-added", {
       detail: {
         title: title,
@@ -40,10 +37,8 @@ class NoteForm extends HTMLElement {
       composed: true,
     });
 
-    // 4. Mengirimkan event tersebut dari elemen <note-form>
     this.dispatchEvent(newNoteEvent);
 
-    // 5. Mengosongkan form setelah submit
     this._shadowRoot.querySelector("#title").value = "";
     this._shadowRoot.querySelector("#body").value = "";
   }
@@ -77,7 +72,7 @@ class NoteForm extends HTMLElement {
         border-radius: 4px;
         font-family: sans-serif;
         font-size: 1rem;
-        box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+        box-sizing: border-box;
       }
 
       input:focus, textarea:focus {

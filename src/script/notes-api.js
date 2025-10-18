@@ -7,11 +7,9 @@ const getNotes = async () => {
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
-    // Jika status tidak success, lempar error
     throw new Error(responseJson.message);
   }
 
-  // Jika berhasil, kembalikan data notes
   return responseJson.data;
 };
 
@@ -30,7 +28,6 @@ const createNote = async (title, body) => {
     throw new Error(responseJson.message);
   }
 
-  // Kembalikan data catatan baru yang dibuat
   return responseJson.data;
 };
 
@@ -45,7 +42,6 @@ const deleteNote = async (noteId) => {
     throw new Error(responseJson.message);
   }
 
-  // Jika berhasil, kembalikan pesan sukses
   return responseJson.message;
 };
 

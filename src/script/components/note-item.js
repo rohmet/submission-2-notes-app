@@ -16,7 +16,6 @@ class NoteItem extends HTMLElement {
   // Method ini akan dipanggil ketika properti 'note' di-set
   set note(value) {
     this._note = value;
-    // Render ulang komponen dengan data baru
     this.render();
   }
 
@@ -31,7 +30,7 @@ class NoteItem extends HTMLElement {
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         background-color: #ffffff;
-        overflow: hidden; /* Agar konten tidak keluar dari border-radius */
+        overflow: hidden;
       }
 
       .note-card {
@@ -54,7 +53,7 @@ class NoteItem extends HTMLElement {
 
       .delete-button {
         padding: 0.5rem 1rem;
-        background-color: #dc3545; /* Warna merah untuk bahaya */
+        background-color: #dc3545;
         color: white;
         border: none;
         border-radius: 4px;
@@ -87,13 +86,12 @@ class NoteItem extends HTMLElement {
     this._shadowRoot
       .querySelector(".delete-button")
       .addEventListener("click", () => {
-        // Kirim event 'note-deleted' saat tombol diklik
         this.dispatchEvent(
           new CustomEvent("note-deleted", {
-            detail: { noteId: this._note.id }, // Kirim ID catatan
+            detail: { noteId: this._note.id },
             bubbles: true,
             composed: true,
-          }),
+          })
         );
       });
   }

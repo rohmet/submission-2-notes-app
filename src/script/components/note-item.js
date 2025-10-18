@@ -93,7 +93,7 @@ class NoteItem extends HTMLElement {
             detail: { noteId: this._note.id }, // Kirim ID catatan
             bubbles: true,
             composed: true,
-          })
+          }),
         );
       });
   }

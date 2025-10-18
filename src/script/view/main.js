@@ -84,7 +84,7 @@ const main = () => {
 
     // Tampilkan konfirmasi
     const isConfirmed = confirm(
-      "Apakah Anda yakin ingin menghapus catatan ini?"
+      "Apakah Anda yakin ingin menghapus catatan ini?",
     );
     if (!isConfirmed) {
       return; // Batal jika pengguna menekan "Cancel"
